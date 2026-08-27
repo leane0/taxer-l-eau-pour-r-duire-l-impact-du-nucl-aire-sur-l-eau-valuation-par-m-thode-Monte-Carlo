@@ -59,7 +59,7 @@ def npv_dict(d):
     if CNPE in ["Tricastin", "Saint-Alban", "Bugey"]:
         loss_opex = d["loss_opex"]
         FC = d["FC"]
-        opex = (loss_opex* (power * 365 * 24 * 3600)* FC* electricity_price)
+        opex = (loss_opex* (power * 365 * 24)* FC* electricity_price)
         gain_redevance = (9.1* param["TAUX_REDEVANCE_Q"][scenario] * param["V_REST_OUVERT"])
 
     else:
@@ -69,7 +69,7 @@ def npv_dict(d):
 
     # FLUX DE TRÉSORERIE 2030 ET 2050
 
-    production = power * 365 * 24 * 3600
+    production = power * 365 * 24
     CF_2030 = (-opex + loss_2030 * electricity_price * production + gain_redevance)
     CF_2050 = ( -opex + loss_2050 * electricity_price * production+ gain_redevance )
 
@@ -197,51 +197,78 @@ def tornado_plot(NPV_results, CNPE, scenario):
     # 5. CALCUL DES EFFETS
 
     effects = []
+
     for name, (key, bounds) in variables.items():
-        low = base.copy()
-        high = base.copy()
-        low[key] = bounds[0]
-        high[key] = bounds[1]
-        # Calcul NPV
-        npv_low = npv_dict(low)
-        npv_high = npv_dict(high)
 
-        effects.append([name, npv_low, npv_high, abs(npv_high - npv_low)])
+        low_param = base.copy()
+        high_param = base.copy()
 
-    # 6. TRI DES VARIABLES
+        low_param[key] = bounds[0]
+        high_param[key] = bounds[1]
 
+        npv_low = npv_dict(low_param)
+        npv_high = npv_dict(high_param)
+
+        effects.append([
+            name,
+            npv_low,
+            npv_high,
+            abs(npv_high - npv_low)
+        ])
+
+
+    # Tri
     effects.sort(key=lambda x: x[3], reverse=True)
-    labels = []
-    low = []
-    high = []
 
-    for effect in effects:
-        labels.append(effect[0])
-        low.append(effect[1] / 1e6 )
-        high.append( effect[2] / 1e6 )
-
-    # 7. TORNADO PLOT
+    labels = [e[0] for e in effects]
+    npv_low = [e[1] / 1e6 for e in effects]
+    npv_high = [e[2] / 1e6 for e in effects]
 
     y = np.arange(len(labels))
-    plt.figure(figsize=(9, 7))
-    plt.hlines(y, low, high, linewidth=8 )
 
-    plt.plot(low, y, "o" )
+    plt.figure(figsize=(9,7))
 
-    plt.plot( high, y, "o" )
+    # Barres
+    plt.hlines(
+        y,
+        np.minimum(npv_low, npv_high),
+        np.maximum(npv_low, npv_high),
+        linewidth=8
+    )
 
-    plt.yticks( y, labels )
+    # Points correspondant réellement au paramètre min/max
+    plt.scatter(npv_low, y, zorder=3, label="Valeur min du paramètre")
+    plt.scatter(npv_high, y, zorder=3, label="Valeur max du paramètre")
 
-    # NPV moyenne Monte Carlo
-    plt.axvline( np.mean(NPV_results) / 1e6,linestyle="--",label="NPV moyenne")
+    # Seuil de rentabilité
+    plt.axvline(
+        0,
+        linestyle="-",
+        linewidth=1,
+        label="VAN = 0"
+    )
 
-    plt.xlabel("NPV (M€)")
+    # VAN de référence
+    npv_mean = np.mean(NPV_results)
+
+    plt.axvline(
+        npv_mean / 1e6,
+        linestyle="--",
+        label="VAN moyenne")
+
+    plt.yticks(y, labels)
+    plt.xlabel("VAN (M€)")
     plt.ylabel("Variable")
-    plt.title(f"Tornado plot – sensibilité de la NPV\n" f"{CNPE} – scénario {scenario}")
+    plt.title(
+        f"Tornado plot – sensibilité de la VAN\n"
+        f"{CNPE} – scénario {scenario}"
+    )
 
     plt.legend()
     plt.tight_layout()
     plt.show()
+
+    
 def calc_sobol(CNPE, scenario):
     
     param = CNPE_PARAMETERS[CNPE]

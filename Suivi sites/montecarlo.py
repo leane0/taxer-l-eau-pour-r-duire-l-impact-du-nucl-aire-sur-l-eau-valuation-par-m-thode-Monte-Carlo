@@ -34,7 +34,7 @@ def montecarlo_simulation(n_sim,cnpe_choice,scenario):
             loss_opex = np.random.triangular(param["PERTE_OPEX_MIN"],param["PERTE_OPEX_MODE"],param["PERTE_OPEX_MAX"])
             FC = np.random.beta(param["FC_ALPHA"],param["FC_BETA"])
             opex = loss_opex * (power*365*24) * FC * electricity_price
-            gain_redevance = 9.1*param["TAUX_REDEVANCE_Q"][scenario] * param["V_REST_OUVERT"]
+            gain_redevance = param["TAUX_REDEVANCE_PREL"][scenario] * param["V_PREL_OUVERT"]*1e4+9.1*param["TAUX_REDEVANCE_Q"][scenario] * param["V_REST_OUVERT"]
         else :
             k = np.random.triangular(param["K_OPEX_MIN"],param["K_OPEX_MODE"],param["K_OPEX_MAX"])
             opex = capex * k
@@ -42,7 +42,6 @@ def montecarlo_simulation(n_sim,cnpe_choice,scenario):
 
         CF_2030 = - opex + loss_2030*electricity_price* (power*365*24) + gain_redevance
         CF_2050 = - opex + loss_2050*electricity_price* (power*365*24) + gain_redevance
-        print (CF_2030,CF_2050)
         NPV, ROI = compute_NPV(lifetime,capex,wacc,CF_2030,CF_2050)
 
         NPV_results.append(NPV)
@@ -59,7 +58,7 @@ if __name__=="__main__":
     print("--------------------------------")
     print("Monte Carlo results")
     print("--------------------------------")
-    n_sim = 10000
+    n_sim = 100000
     scenario = "S_REF" #S_REF, S_HARM, S_RENF, S_RENF_FORT
     CNPE = 'Tricastin'
 
@@ -71,13 +70,16 @@ if __name__=="__main__":
 
     std=np.std(NPV_results,ddof=1)
     SE=std/np.sqrt(n_sim)
-    CI95=(mean-1.96*SE,mean+1.96*SE)
+    q025 = np.percentile(NPV_results, 2.5)
+    q975 = np.percentile(NPV_results, 97.5)
+
     print(f"Mean NPV : {mean/1e6:.1f} M€")
     print(f"Median NPV : {median/1e6:.1f} M€")
     print(
-        f"95% confidence interval : "
-        f"[{CI95[0]/1e6:.1f} ; {CI95[1]/1e6:.1f}] M€"
-    )
+            f"NPV standard deviation : "
+            f"{np.std(NPV_results)/1e6:.1f} M€"
+        )
+    print(f"Intervalle à 95 % : [{q025/1e6:.1f} ; {q975/1e6:.1f}] M€")
     print(
         f"Probability NPV > 0 : "
         f"{np.mean(NPV_results>0)*100:.1f}%"

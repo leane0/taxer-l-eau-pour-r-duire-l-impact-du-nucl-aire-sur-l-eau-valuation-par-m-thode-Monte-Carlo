@@ -2,9 +2,9 @@
 
 CNPE_PARAMETERS = {
     "Tricastin": {
-        "CAPEX_MIN": 979855095.25,       # $
-        "CAPEX_MAX": 2427999196.72 ,     # $
-        "CAPEX_MODE": 1501593879.59 ,    # $
+        "CAPEX_MIN": 500e6,#979855095.25,       # $
+        "CAPEX_MAX": 1501593879.59, #2427999196.72 ,     # $
+        "CAPEX_MODE": 1e9, #1501593879.59 ,    # $
         "PERTE_OPEX_MIN": -0.0044,
         "PERTE_OPEX_MAX": 0.0098,
         "PERTE_OPEX_MODE": 0.0022,
@@ -22,14 +22,20 @@ CNPE_PARAMETERS = {
                        "S_HARM" : 85,
                        "S_RENF" : 100,
                        "S_RENF_FORT" : 850,},
+        "TAUX_REDEVANCE_PREL" : {"S_REF" : 0.34, #t_{prel}^o-\ \frac{t_{prel}^f}{10,2}
+                       "S_HARM" : 0.21,
+                       "S_RENF" : 1.16,
+                       "S_RENF_FORT" : 3.26,},
+
         "V_REST_OUVERT" : 3446,
+        "V_PREL_OUVERT" : 4684,
 
     },
 
     "Bugey": {
-        "CAPEX_MIN": 759381132.56 ,       # $
-        "CAPEX_MAX": 1312431998.22  ,     # $
-        "CAPEX_MODE": 926537232.21  ,     # $
+        "CAPEX_MIN": 500e6 ,       # $
+        "CAPEX_MAX": 926537232.21  ,     # $
+        "CAPEX_MODE": 713e6  ,     # $
         "PERTE_OPEX_MIN": -0.0044,
         "PERTE_OPEX_MAX": 0.0098,
         "PERTE_OPEX_MODE": 0.0022,
@@ -47,13 +53,18 @@ CNPE_PARAMETERS = {
                        "S_HARM" : 85,
                        "S_RENF" : 100,
                        "S_RENF_FORT" : 200,},   
-        "V_REST_OUVERT" : 1995,     
+         "TAUX_REDEVANCE_PREL" : {"S_REF" : 0.34, #t_{prel}^o-\ \frac{t_{prel}^f}{10,2}
+                       "S_HARM" : 0.21,
+                       "S_RENF" : 1.16,
+                       "S_RENF_FORT" : 3.26,},
+        "V_REST_OUVERT" : 1995,  
+        "V_PREL_OUVERT" : 2646,   
     },
 
     "Saint-Alban": {
-        "CAPEX_MIN": 863133585.59  ,       # $
-        "CAPEX_MAX": 1837404797.51  ,      # $
-        "CAPEX_MODE": 1197152125.09  ,     # $
+        "CAPEX_MIN": 500e6  ,       # $
+        "CAPEX_MAX": 1197152125.09  ,      # $
+        "CAPEX_MODE": 850e6  ,     # $
         "PERTE_OPEX_MIN": -0.0044,
         "PERTE_OPEX_MAX": 0.0098,
         "PERTE_OPEX_MODE": 0.0022,
@@ -72,6 +83,11 @@ CNPE_PARAMETERS = {
                                "S_RENF" : 100,
                                "S_RENF_FORT" : 200,}, 
         "V_REST_OUVERT" : 2636,
+         "TAUX_REDEVANCE_PREL" : {"S_REF" : 0.34, #t_{prel}^o-\ \frac{t_{prel}^f}{10,2}
+                       "S_HARM" : 0.21,
+                       "S_RENF" : 1.16,
+                       "S_RENF_FORT" : 3.26,},
+        "V_PREL_OUVERT" : 3600,
         
     },
 
