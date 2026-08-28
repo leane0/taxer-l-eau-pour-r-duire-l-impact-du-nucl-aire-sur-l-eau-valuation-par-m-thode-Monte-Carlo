@@ -266,7 +266,6 @@ def tornado_plot(NPV_results, CNPE, scenario):
 
     plt.legend()
     plt.tight_layout()
-    plt.show()
 
     
 def calc_sobol(CNPE, scenario):
@@ -544,7 +543,5 @@ def calc_sobol(CNPE, scenario):
     plt.legend()
 
     plt.tight_layout()
-
-    plt.show()
 
     return Si
