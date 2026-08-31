@@ -131,7 +131,10 @@ CNPE_PARAMETERS = {
         "TAUX_REDEVANCE_Q" : {"S_REF" : 60,
                                "S_HARM" : 85,
                                "S_RENF" : 300,
-                               "S_RENF_FORT" : 600,},
+                               "S_RENF_FORT" : 600,
+                               "S_1":6000,
+                               "S_2":60000,
+                               "S_3":600000,},
         "V_REST" : 73.92,
  
     }

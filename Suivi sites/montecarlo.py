@@ -1,6 +1,6 @@
 import numpy as np
 import matplotlib.pyplot as plt
-from montecarlo_utils import tornado_plot,calc_sobol,compute_NPV
+from montecarlo_utils import *
 from param import CNPE_PARAMETERS
 from plot import *
 import os
@@ -21,7 +21,7 @@ WACC_VALUES = [0.02,0.06,0.1]
 
 
 
-def montecarlo_parameters(n_sim, cnpe_choice, scenario):
+def montecarlo_parameters(n_sim, cnpe_choice, scenario,r_Q=0):
     
     param = CNPE_PARAMETERS[cnpe_choice]
 
@@ -35,76 +35,46 @@ def montecarlo_parameters(n_sim, cnpe_choice, scenario):
     for i in range(n_sim):
 
         lifetime = np.random.choice(param["L"])
-        capex = np.random.triangular(
-            param["CAPEX_MIN"],
-            param["CAPEX_MODE"],
-            param["CAPEX_MAX"]
-        )
-        loss_2030 = np.random.triangular(
-            param["PERTE_PROD_2030_MIN"],
-            param["PERTE_PROD_2030_MODE"],
-            param["PERTE_PROD_2030_MAX"]
-        )
-        loss_2050 = np.random.triangular(
-            param["PERTE_PROD_2050_MIN"],
-            param["PERTE_PROD_2050_MODE"],
-            param["PERTE_PROD_2050_MAX"]
-        )
+        capex = np.random.triangular(param["CAPEX_MIN"],param["CAPEX_MODE"],param["CAPEX_MAX"])
+        loss_2030 = np.random.triangular(param["PERTE_PROD_2030_MIN"],param["PERTE_PROD_2030_MODE"],param["PERTE_PROD_2030_MAX"])
+        loss_2050 = np.random.triangular(param["PERTE_PROD_2050_MIN"],param["PERTE_PROD_2050_MODE"],param["PERTE_PROD_2050_MAX"])
+        wacc = np.random.choice(WACC_VALUES)
+        electricity_price = np.random.normal(ELECTRICITY_PRICE_MU,ELECTRICITY_PRICE_SIGMA)
         power = param["PUISSANCE"]
-        wacc=np.random.triangular(WACC_VALUES[0],WACC_VALUES[1],WACC_VALUES[2])
 
         # OPEX
         if cnpe_choice in ["Tricastin", "Saint-Alban", "Bugey"]:
-            loss_opex = np.random.triangular(
-                param["PERTE_OPEX_MIN"],
-                param["PERTE_OPEX_MODE"],
-                param["PERTE_OPEX_MAX"]
-            )
-            FC = np.random.beta(
-                param["FC_ALPHA"],
-                param["FC_BETA"]
-            )
-            electricity_price = np.random.normal(
-                ELECTRICITY_PRICE_MU,
-                ELECTRICITY_PRICE_SIGMA
-            )
-            opex = (loss_opex
-                * (power * 365 * 24)* FC* electricity_price)
-
-            gain_redevance = (
-                param["TAUX_REDEVANCE_PREL"][scenario]* param["V_PREL_OUVERT"] * 1e4
-                + 9.1* param["TAUX_REDEVANCE_Q"][scenario] * param["V_REST_OUVERT"])
-
-        else:
-
-            k = np.random.triangular(
-                param["K_OPEX_MIN"],
-                param["K_OPEX_MODE"],
-                param["K_OPEX_MAX"]
-            )
+            loss_opex = np.random.triangular(param["PERTE_OPEX_MIN"],param["PERTE_OPEX_MODE"],param["PERTE_OPEX_MAX"])
+            FC = np.random.beta(param["FC_ALPHA"],param["FC_BETA"])
+            opex = loss_opex * (power*365*24) * FC * electricity_price
+            gain_redevance = param["TAUX_REDEVANCE_PREL"][scenario] * param["V_PREL_OUVERT"]*1e4+9.1*param["TAUX_REDEVANCE_Q"][scenario] * param["V_REST_OUVERT"]
+        else :
+            k = np.random.triangular(param["K_OPEX_MIN"],param["K_OPEX_MODE"],param["K_OPEX_MAX"])
             opex = capex * k
-            gain_redevance = (5
-                * param["TAUX_REDEVANCE_Q"][scenario]
-                * param["V_REST"])
+            if r_Q != 0 : gain_redevance = 10*r_Q * param["V_REST"]
+            else : gain_redevance = 10*param["TAUX_REDEVANCE_Q"][scenario] * param["V_REST"]
 
         # Perte de production moyenne
+        CF_2030 = - opex + loss_2030*electricity_price* (power*365*24) + gain_redevance
+        CF_2050 = - opex + loss_2050*electricity_price* (power*365*24) + gain_redevance
+        NPV, ROI = compute_NPV(lifetime,capex,wacc,CF_2030,CF_2050)
         loss_prod_mean = (loss_2030 + loss_2050) / 2
-        CF_2030 = -opex + gain_redevance + loss_2030
-        CF_2050 = -opex + gain_redevance + loss_2050
 
         capex_results.append(capex)
         opex_results.append(opex)
         redevance_results.append(gain_redevance)
         loss_prod_results.append(loss_prod_mean)
-        NPV,ROI = compute_NPV(lifetime,capex,wacc,CF_2030,CF_2050)
+        npv_results.append(NPV)
+        roi_results.append(ROI)
+
     return {
-        "NPV" : np.array(NPV),
-        "ROI" : np.array(ROI),
+        "NPV" : np.array(npv_results),
+        "ROI" : np.array(roi_results),
         "CAPEX": np.array(capex_results),
         "OPEX": np.array(opex_results),
         "REDEVANCE": np.array(redevance_results),
         "LOSS_PROD": np.array(loss_prod_results)
-    }
+}
 
 if __name__ == "__main__":
     
@@ -121,6 +91,7 @@ if __name__ == "__main__":
         "S_RENF",
         "S_RENF_FORT"
     ]
+
 
     CNPEs = list(CNPE_PARAMETERS.keys())
 
@@ -206,6 +177,7 @@ if __name__ == "__main__":
             plot_ROI(ROI_results,CNPE,scenario,os,scenario_dir)
             plot_convergence(NPV_results,n_sim,CNPE,scenario,os,scenario_dir)
 
+            print("----TORNADO PLOT -------")
             tornado_plot(NPV_results,CNPE,scenario)
             plt.savefig(os.path.join(scenario_dir,"tornado.png"),dpi=300,bbox_inches="tight")
             plt.close()

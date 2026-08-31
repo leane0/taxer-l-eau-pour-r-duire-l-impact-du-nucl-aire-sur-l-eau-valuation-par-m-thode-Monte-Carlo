@@ -28,6 +28,13 @@ GROUP_2 = [
     "Nogent"
 ]
 
+SCENARIOS_NOGENT=[
+    "S_REF",
+    "S_RENF_FORT",
+    "S_1",
+    "S_2"
+]
+
 
 # ============================================================
 # CHARGEMENT
@@ -116,7 +123,6 @@ def plot_cdf(cnpe_group, scenario, variable):
         # ----------------------------------------------------
 
         x, F = empirical_cdf(values)
-
         plt.plot(
             x,
             F,
@@ -198,40 +204,136 @@ def plot_cdf(cnpe_group, scenario, variable):
 # GENERATION DE TOUTES LES FIGURES
 # ============================================================
 
-for scenario in SCENARIOS:
-
+"""for scenario in SCENARIOS:
+    
     print("\n========================================")
     print(f"Scenario : {scenario}")
     print("========================================")
 
+    plot_cdf( GROUP_1, scenario, "NPV")
+    plot_cdf( GROUP_2, scenario, "NPV")
+
+    plot_cdf( GROUP_1, scenario, "ROI" )
+
+    plot_cdf(GROUP_2, scenario, "ROI")"""
+
+def plot_cdf_nogent( scenarios, variable):
+    
+    plt.figure(figsize=(8, 5))
+    CNPE="Nogent"
+
+    for scenario in scenarios:
+
+        try:
+            data = load_results(CNPE, scenario)
+
+        except FileNotFoundError:
+            print(
+                f"Fichier introuvable : "
+                f"{CNPE} / {scenario}"
+            )
+            continue
+
+        values = np.asarray(data[variable])
+
+        if variable == "NPV":
+            # €
+            values = values / 1e6
+            xlabel = "NPV (M€)"
+
+        elif variable == "ROI":
+            # fraction -> %
+            values = values * 100
+            xlabel = "ROI (%)"
+
+        else:
+            raise ValueError(
+                "variable doit être 'NPV' ou 'ROI'"
+            )
+        # ----------------------------------------------------
+        # CDF
+        # ----------------------------------------------------
+
+        x, F = empirical_cdf(values)
+        label={"S_REF":"Scénario de référence","S_RENF_FORT":"Redevance thermique x10 (reforcement 2)","S_1":"Redevance thermique x 100","S_2":"Redevance thermique x 1000"}
+
+        plt.plot(
+            x,
+            F,
+            label=label[scenario]
+        )
+
     # --------------------------------------------------------
-    # NPV
+    # Ligne x = 0
     # --------------------------------------------------------
 
-    plot_cdf(
-        GROUP_1,
-        scenario,
-        "NPV"
+    plt.axvline(
+        x=0,
+        linestyle="--",
+        linewidth=1
     )
 
-    plot_cdf(
-        GROUP_2,
-        scenario,
-        "NPV"
+    # Médiane
+    plt.axhline(
+        y=0.5,
+        linestyle=":",
+        linewidth=1
     )
 
     # --------------------------------------------------------
-    # ROI
+    # Labels
     # --------------------------------------------------------
 
-    plot_cdf(
-        GROUP_1,
-        scenario,
-        "ROI"
+    plt.xlabel(xlabel)
+
+    plt.ylabel(
+        f"P({xlabel.split()[0]} ≤ x)"
     )
 
-    plot_cdf(
-        GROUP_2,
-        scenario,
-        "ROI"
+    plt.title(
+        f"Empirical CDF of {variable} — {scenario}"
     )
+
+    plt.ylim(0, 1)
+
+    plt.grid(
+        alpha=0.3
+    )
+
+    plt.legend()
+
+    plt.tight_layout()
+
+    # --------------------------------------------------------
+    # SAUVEGARDE
+    # --------------------------------------------------------
+
+    output_dir = os.path.join(
+        RESULTS_DIR,
+        "CDF"
+    )
+
+    os.makedirs(output_dir, exist_ok=True)
+
+    group_name = "_".join(["Nogent"])
+
+    filepath = os.path.join(
+        output_dir,
+        f"CDF_{variable}_{CNPE}.png"
+    )
+
+    plt.savefig(
+        filepath,
+        dpi=300,
+        bbox_inches="tight"
+    )
+
+    #plt.show()
+    plt.close()
+
+    print(f"Figure saved : {filepath}")
+
+
+
+plot_cdf_nogent( SCENARIOS_NOGENT, "NPV")
+plot_cdf_nogent( SCENARIOS_NOGENT, "ROI" )
