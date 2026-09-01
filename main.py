@@ -20,7 +20,6 @@ WACC_VALUES = [0.02,0.06,0.1]
 
 
 
-
 def montecarlo_parameters(n_sim, cnpe_choice, scenario,r_Q=0):
     
     param = CNPE_PARAMETERS[cnpe_choice]

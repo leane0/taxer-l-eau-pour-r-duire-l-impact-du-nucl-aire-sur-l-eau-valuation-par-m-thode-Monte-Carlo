@@ -1,15 +1,16 @@
 import numpy as np
 import matplotlib.pyplot as plt
 
+# trace redevance, opex, capex, pertes moyennes pour chaque scenario, centrale (obsolete)
+
+
 def plot_param (CNPE,SCENARIOS,results):
     x = np.arange(len(CNPE))
     width = 0.25
 
     fig, axes = plt.subplots(4, 1, figsize=(12, 16))
 
-    # ============================================================
     # CAPEX
-    # ============================================================
     # print(results[CNPE][SCENARIOS])
     for j, scenario in enumerate(SCENARIOS):
         values = [
@@ -31,10 +32,7 @@ def plot_param (CNPE,SCENARIOS,results):
     axes[0].legend()
     axes[0].grid(axis="y", alpha=0.3)
 
-
-    # ============================================================
     # OPEX
-    # ============================================================
 
     for j, scenario in enumerate(SCENARIOS):
 
@@ -56,10 +54,7 @@ def plot_param (CNPE,SCENARIOS,results):
     axes[1].set_xticklabels(CNPE)
     axes[1].grid(axis="y", alpha=0.3)
 
-
-    # ============================================================
-    # GAIN DE REDEVANCE
-    # ============================================================
+    # gain redevance
 
     for j, scenario in enumerate(SCENARIOS):
 
@@ -81,10 +76,7 @@ def plot_param (CNPE,SCENARIOS,results):
     axes[2].set_xticklabels(CNPE)
     axes[2].grid(axis="y", alpha=0.3)
 
-
-    # ============================================================
-    # PERTE DE PRODUCTION
-    # ============================================================
+    # perte de production
 
     for j, scenario in enumerate(SCENARIOS):
 

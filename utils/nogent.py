@@ -1,15 +1,18 @@
-from montecarlo import *
+from main import *
 import numpy as np
 import matplotlib.pyplot as plt
-from montecarlo_utils import *
+from utils.montecarlo_utils import *
 from param import CNPE_PARAMETERS
-from plot import *
+from utils.plot import *
 import os
 import pandas as pd
 import pickle
 from plot_param import *
-from sobol import *
-from tornado import *
+from utils.sobol import *
+from utils.tornado import *
+
+# pour tracer le graphique avec la proba de VAN positive en fonction du taux de redevance en chaleur
+
 
 if __name__ == "__main__":
     
@@ -33,9 +36,6 @@ if __name__ == "__main__":
     all_results = []
     redevance_Q = range (60,46060,500)
 
-    # ============================================================
-    # BOUCLE CNPE / SCENARIO
-    # ============================================================
     results={}
     for CNPE in CNPEs:
         print(CNPE)
@@ -116,9 +116,7 @@ if __name__ == "__main__":
             #plt.savefig(os.path.join(scenario_dir,"sobol.png"),dpi=300,bbox_inches="tight")
             #plt.close()
 
-    # CSV FINAL
-
-
+    # CSV final
 
     results_df = pd.DataFrame(all_results)
     csv_path = os.path.join(output_dir,"results_rQ.csv")

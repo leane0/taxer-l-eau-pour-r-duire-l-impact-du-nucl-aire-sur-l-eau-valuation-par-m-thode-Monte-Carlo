@@ -1,6 +1,8 @@
 import numpy as np
 import matplotlib.pyplot as plt
 
+# fonctions d'affichage
+
 def print_results(mean,median,std,q025,q975,probability_positive,mean_roi,std_roi):
     print(f"Mean NPV : {mean/1e6:.1f} M€")
     print(f"Median NPV : {median/1e6:.1f} M€")
