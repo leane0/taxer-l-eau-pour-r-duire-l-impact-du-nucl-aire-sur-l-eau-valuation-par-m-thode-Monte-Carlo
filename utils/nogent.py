@@ -1,8 +1,6 @@
 from main import *
 import numpy as np
-import matplotlib.pyplot as plt
 from utils.montecarlo_utils import *
-from param import CNPE_PARAMETERS
 from utils.plot import *
 import os
 import pandas as pd

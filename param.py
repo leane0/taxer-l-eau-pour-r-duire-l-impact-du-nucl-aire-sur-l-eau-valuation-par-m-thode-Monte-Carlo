@@ -151,6 +151,229 @@ CNPE_PARAMETERS = {
                                "S_THER_2":12000,},
         "V_REST" : 73.92,
  
+    },
+
+    "Cattenom": {
+        "CAPEX_MIN": 35.54e6,
+        "CAPEX_MAX": 208e6,
+        "CAPEX_MODE": 57.4e6,
+        "K_OPEX_MIN": -0.003,
+        "K_OPEX_MAX": 0.0246,
+        "K_OPEX_MODE": 0.0138,
+        "L": [10,20,30,40],
+
+        "PERTE_PROD_2030_MIN": 0.000,
+        "PERTE_PROD_2030_MODE": 0.00121,
+        "PERTE_PROD_2030_MAX": 0.00241,
+
+        "PERTE_PROD_2050_MIN": 0.00121,
+        "PERTE_PROD_2050_MODE": 0.00241,
+        "PERTE_PROD_2050_MAX": 0.00505,
+
+        "PUISSANCE": 5200,
+
+        "TAUX_REDEVANCE_Q": {
+            "S_REF": 44,
+            "S_HARM": 85,
+            "S_RENF": 220,
+            "S_RENF_FORT": 440,
+            "S_THER_1": 4400,
+            "S_THER_2": 8800
+        },
+
+        "V_REST": 126.10
+    },
+
+
+    "Chooz": {
+        "CAPEX_MIN": 35.54e6,
+        "CAPEX_MAX": 208e6,
+        "CAPEX_MODE": 57.4e6,
+        "K_OPEX_MIN": -0.003,
+        "K_OPEX_MAX": 0.0246,
+        "K_OPEX_MODE": 0.0138,
+        "L": [10,20,30,40],
+
+        "PERTE_PROD_2030_MIN": 0.000,
+        "PERTE_PROD_2030_MODE": 0.01771,
+        "PERTE_PROD_2030_MAX": 0.03464,
+
+        "PERTE_PROD_2050_MIN": 0.01771,
+        "PERTE_PROD_2050_MODE": 0.03464,
+        "PERTE_PROD_2050_MAX": 0.04251,
+
+        "PUISSANCE": 2900,
+
+        "TAUX_REDEVANCE_Q": {
+            "S_REF": 44,
+            "S_HARM": 85,
+            "S_RENF": 220,
+            "S_RENF_FORT": 440,
+            "S_THER_1": 4400,
+            "S_THER_2": 8800
+        },
+
+        "V_REST": 77.33
+    },
+
+
+    "Cruas": {
+        "CAPEX_MIN": 35.54e6,
+        "CAPEX_MAX": 208e6,
+        "CAPEX_MODE": 57.4e6,
+        "K_OPEX_MIN": -0.003,
+        "K_OPEX_MAX": 0.0246,
+        "K_OPEX_MODE": 0.0138,
+        "L": [10,20,30,40],
+
+        "PERTE_PROD_2030_MIN": 0.000,
+        "PERTE_PROD_2030_MODE": 0.00006,
+        "PERTE_PROD_2030_MAX": 0.00016,
+
+        "PERTE_PROD_2050_MIN": 0.00006,
+        "PERTE_PROD_2050_MODE": 0.00016,
+        "PERTE_PROD_2050_MAX": 0.00025,
+
+        "PUISSANCE": 3600,
+
+        "TAUX_REDEVANCE_Q": {
+            "S_REF": 20,
+            "S_HARM": 85,
+            "S_RENF": 100,
+            "S_RENF_FORT": 200,
+            "S_THER_1": 2000,
+            "S_THER_2": 4000
+        },
+
+        "V_REST": 280.79
+    },
+
+
+    "Chinon": {
+        "CAPEX_MIN": 35.54e6,
+        "CAPEX_MAX": 208e6,
+        "CAPEX_MODE": 57.4e6,
+        "K_OPEX_MIN": -0.003,
+        "K_OPEX_MAX": 0.0246,
+        "K_OPEX_MODE": 0.0138,
+        "L": [10,20,30,40],
+
+        "PERTE_PROD_2030_MIN": 0.000,
+        "PERTE_PROD_2030_MODE": 0.00006,
+        "PERTE_PROD_2030_MAX": 0.00010,
+
+        "PERTE_PROD_2050_MIN": 0.00006,
+        "PERTE_PROD_2050_MODE": 0.00010,
+        "PERTE_PROD_2050_MAX": 0.00063,
+
+        "PUISSANCE": 3600,
+
+        "TAUX_REDEVANCE_Q": {
+            "S_REF": 60,
+            "S_HARM": 85,
+            "S_RENF": 300,
+            "S_RENF_FORT": 600,
+            "S_THER_1": 6000,
+            "S_THER_2": 12000
+        },
+
+        "V_REST": 97.20
+    },
+
+
+    "Dampierre": {
+        "CAPEX_MIN": 35.54e6,
+        "CAPEX_MAX": 208e6,
+        "CAPEX_MODE": 57.4e6,
+        "K_OPEX_MIN": -0.003,
+        "K_OPEX_MAX": 0.0246,
+        "K_OPEX_MODE": 0.0138,
+        "L": [10,20,30,40],
+
+        "PERTE_PROD_2030_MIN": 0.000,
+        "PERTE_PROD_2030_MODE": 0.00032,
+        "PERTE_PROD_2030_MAX": 0.00095,
+
+        "PERTE_PROD_2050_MIN": 0.00032,
+        "PERTE_PROD_2050_MODE": 0.00095,
+        "PERTE_PROD_2050_MAX": 0.00190,
+
+        "PUISSANCE": 3600,
+
+        "TAUX_REDEVANCE_Q": {
+            "S_REF": 60,
+            "S_HARM": 85,
+            "S_RENF": 300,
+            "S_RENF_FORT": 600,
+            "S_THER_1": 6000,
+            "S_THER_2": 12000
+        },
+
+        "V_REST": 102.30
+    },
+
+
+    "Belleville": {
+        "CAPEX_MIN": 35.54e6,
+        "CAPEX_MAX": 208e6,
+        "CAPEX_MODE": 57.4e6,
+        "K_OPEX_MIN": -0.003,
+        "K_OPEX_MAX": 0.0246,
+        "K_OPEX_MODE": 0.0138,
+        "L": [10,20,30,40],
+
+        "PERTE_PROD_2030_MIN": 0.000,
+        "PERTE_PROD_2030_MODE": 0.00022,
+        "PERTE_PROD_2030_MAX": 0.00088,
+
+        "PERTE_PROD_2050_MIN": 0.00022,
+        "PERTE_PROD_2050_MODE": 0.00088,
+        "PERTE_PROD_2050_MAX": 0.00241,
+
+        "PUISSANCE": 2600,
+
+        "TAUX_REDEVANCE_Q": {
+            "S_REF": 60,
+            "S_HARM": 85,
+            "S_RENF": 300,
+            "S_RENF_FORT": 600,
+            "S_THER_1": 6000,
+            "S_THER_2": 12000
+        },
+
+        "V_REST": 99.63
+    },
+
+
+    "Saint-Laurent": {
+        "CAPEX_MIN": 35.54e6,
+        "CAPEX_MAX": 208e6,
+        "CAPEX_MODE": 57.4e6,
+        "K_OPEX_MIN": -0.003,
+        "K_OPEX_MAX": 0.0246,
+        "K_OPEX_MODE": 0.0138,
+        "L": [10,20,30,40],
+
+        "PERTE_PROD_2030_MIN": 0.000,
+        "PERTE_PROD_2030_MODE": 0.00013,
+        "PERTE_PROD_2030_MAX": 0.00051,
+
+        "PERTE_PROD_2050_MIN": 0.00013,
+        "PERTE_PROD_2050_MODE": 0.00051,
+        "PERTE_PROD_2050_MAX": 0.00140,
+
+        "PUISSANCE": 1800,
+
+        "TAUX_REDEVANCE_Q": {
+            "S_REF": 60,
+            "S_HARM": 85,
+            "S_RENF": 300,
+            "S_RENF_FORT": 600,
+            "S_THER_1": 6000,
+            "S_THER_2": 12000
+        },
+
+        "V_REST": 56.14
     }
 
 }

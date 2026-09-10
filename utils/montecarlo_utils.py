@@ -1,8 +1,4 @@
-import numpy as np
-import matplotlib.pyplot as plt
 
-from SALib.sample import saltelli
-from SALib.analyze import sobol
 from param import CNPE_PARAMETERS
 
 # retourne le cas moyen (cas de base)
